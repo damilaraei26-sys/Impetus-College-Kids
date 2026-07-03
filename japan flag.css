@@ -1,0 +1,19 @@
+.red-circle{
+    height: 150px;
+    width: 150px;
+    border-radius: 100%;
+    background: #bc002d; 
+    margin: 40px auto;
+}
+.white-rectangle{
+    height: 300px;
+    width: 400px;
+    background: white;
+    margin: 50px 0px 0px 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+body{
+    background: grey;
+}
