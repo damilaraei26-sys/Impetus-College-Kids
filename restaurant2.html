@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BiteDash Express</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Century Gothic', sans-serif;
+        }
+
+        body {
+            background-color: #fdfdfd;
+            color: #222;
+            padding: 30px 20px;
+        }
+
+        .app-wrapper {
+            max-width: 450px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 30px;
+            padding: 25px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+            border: 1px solid #f1f5f9;
+            position: relative;
+            overflow: hidden;
+            min-height: 550px;
+        }
+
+        /* --- SCREEN 1: MENU VIEW --- */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            font-size: 22px;
+            font-weight: 800;
+        }
+
+        .cart-icon {
+            font-size: 18px;
+            background: #fef08a;
+            padding: 8px 14px;
+            border-radius: 12px;
+            font-weight: bold;
+        }
+
+        .categories {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .cat-pill {
+            padding: 8px 16px;
+            background: #f1f5f9;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+            color: #64748b;
+            cursor: pointer;
+        }
+
+        .cat-pill.active {
+            background: #ffc045;
+            color: #000;
+        }
+
+        .menu-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 80px; /* leaves room for the dynamic basket bar */
+        }
+
+        .food-item {
+            display: flex;
+            align-items: center;
+            background: #fafafa;
+            padding: 12px;
+            border-radius: 18px;
+            border: 1px solid #f1f5f9;
+            transition: all 0.3s;
+        }
+
+        .food-item:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.04);
+            background: #fff;
+        }
+
+        .food-img {
+            width: 70px;
+            height: 70px;
+            background: #f1f5f9;
+            border-radius: 14px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 32px;
+            margin-right: 15px;
+        }
+
+        .food-details {
+            flex-grow: 1;
+        }
+
+        .food-details h3 {
+            font-size: 15px;
+            margin-bottom: 3px;
+            color: #1e293b;
+        }
+
+        .food-details p {
+            font-size: 11px;
+            color: #94a3b8;
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 8px;
+        }
+
+        .price {
+            font-weight: 800;
+            color: #0f172a;
+            font-size: 14px;
+        }
+
+        .add-btn {
+            background: #0f172a;
+            color: #fff;
+            border: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .add-btn:hover {
+            background: #ffc045;
+            color: #000;
+        }
+
+        /* Fixed Bottom Basket Bar */
+        .basket-bar {
+            position: absolute;
+            bottom: 20px;
+            left: 25px;
+            right: 25px;
+            background: #0f172a;
+            border-radius: 16px;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            display: none; /* Hidden until items are added */
+            animation: slideUp 0.3s ease;
+        }
+
+        .basket-btn {
+            background: #ffc045;
+            color: #000;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        /* --- SCREEN 2: CHECKOUT VIEW --- */
+        .checkout-screen {
+            display: none; /* Hidden initially */
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        .checkout-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .back-arrow {
+            font-size: 20px;
+            cursor: pointer;
+            background: #f1f5f9;
+            padding: 5px 10px;
+            border-radius: 8px;
+        }
+
+        .order-summary-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 15px;
+            margin-bottom: 25px;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            margin-bottom: 8px;
+            color: #475569;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: bold;
+            color: #475569;
+            margin-bottom: 6px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #cbd5e1;
+            border-radius: 10px;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .form-group input:focus {
+            border-color: #ffc045;
+        }
+
+        .place-order-btn {
+            width: 100%;
+            background: #10b981;
+            color: white;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 15px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        /* --- SCREEN 3: ORDER SUCCESS STATE --- */
+        .success-screen {
+            display: none;
+            text-align: center;
+            padding: 40px 10px;
+            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        .success-screen .icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+
+        /* --- ANIMATIONS --- */
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes popIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-wrapper">
+        
+        <div id="menuScreen">
+            <div class="header">
+                <h1>BiteDash🍔</h1>
+                <span class="cart-icon" id="cartBadge">🛒 0</span>
+            </div>
+
+            <div class="categories">
+                <span class="cat-pill active">All Items</span>
+                <span class="cat-pill">Burgers</span>
+                <span class="cat-pill">Sides</span>
+            </div>
+
+            <div class="menu-list">
+                <div class="food-item">
+                    <div class="food-img">🍔</div>
+                    <div class="food-details">
+                        <h3>Classic Cheese Blast</h3>
+                        <p>Double beef patty with melted cheddar</p>
+                        <div class="price-row">
+                            <span class="price">₦4,500</span>
+                            <button class="add-btn" onclick="addToCart('Classic Cheese Blast', 4500)">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="food-item">
+                    <div class="food-img">🍟</div>
+                    <div class="food-details">
+                        <h3>Peri-Peri Loaded Fries</h3>
+                        <p>Crispy potato fries with spicy herbs</p>
+                        <div class="price-row">
+                            <span class="price">₦2,200</span>
+                            <button class="add-btn" onclick="addToCart('Peri-Peri Loaded Fries', 2200)">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="basket-bar" id="basketBar">
+                <div>
+                    <p style="font-size: 11px; color: #94a3b8;">Basket Total</p>
+                    <p id="basketTotalText" style="font-weight: bold; font-size: 16px; color: #ffc045;">₦0</p>
+                </div>
+                <button class="basket-btn" onclick="goToCheckout()">Proceed to Checkout ➡</button>
+            </div>
+        </div>
+
+        <div id="checkoutScreen" class="checkout-screen">
+            <div class="checkout-header">
+                <span class="back-arrow" onclick="backToMenu()">⬅</span>
+                <h2 style="font-size: 18px; font-weight: 800;">Secure Checkout</h2>
+            </div>
+
+            <div class="order-summary-box">
+                <h4 style="font-size: 13px; margin-bottom: 10px; color: #0f172a;">Your Selected Items</h4>
+                <div id="summaryItemsContainer"></div>
+                <div class="summary-item" style="border-top: 1px dashed #cbd5e1; padding-top: 8px; margin-top: 8px; font-weight: bold; color: #0f172a;">
+                    <span>Total Amount:</span>
+                    <span id="checkoutTotalText">₦0</span>
+                </div>
+            </div>
+
+            <form onsubmit="completeOrder(event)">
+                <div class="form-group">
+                    <label>Delivery Address</label>
+                    <input type="text" placeholder="e.g. Auditorium Hall, Seat 14" required>
+                </div>
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" placeholder="e.g. 08012345678" required>
+                </div>
+                <button type="submit" class="place-order-btn">Confirm & Pay Order</button>
+            </form>
+        </div>
+
+        <div id="successScreen" class="success-screen">
+            <div class="icon">🚀</div>
+            <h2 style="color: #10b981; font-size: 22px; margin-bottom: 10px;">Order Dispatched!</h2>
+            <p style="color: #475569; font-size: 14px; line-height: 1.6;">Your fresh meal bundle preparation has begun. Tracked delivery routing directly to your seat layout location is active.</p>
+            <br>
+            <button class="add-btn" style="width: auto; padding: 10px 20px; height: auto;" onclick="resetApp()">Order Something Else</button>
+        </div>
+
+    </div>
+
+    <script>
+        let cart = [];
+        let totalAmount = 0;
+
+        function addToCart(itemName, itemPrice) {
+            cart.push({ name: itemName, price: itemPrice });
+            totalAmount += itemPrice;
+
+            // Update App State UI Counter elements
+            document.getElementById('cartBadge').innerText = `🛒 ${cart.length}`;
+            document.getElementById('basketTotalText').innerText = `₦${totalAmount.toLocaleString()}`;
+            
+            // Render popup slider banner block
+            document.getElementById('basketBar').style.display = 'flex';
+        }
+
+        function goToCheckout() {
+            document.getElementById('menuScreen').style.display = 'none';
+            document.getElementById('checkoutScreen').style.display = 'block';
+
+            // Build out order summary list text fields locally
+            const container = document.getElementById('summaryItemsContainer');
+            container.innerHTML = '';
+            cart.forEach(item => {
+                container.innerHTML += `
+                    <div class="summary-item">
+                        <span>• ${item.name}</span>
+                        <span>₦${item.price.toLocaleString()}</span>
+                    </div>`;
+            });
+            document.getElementById('checkoutTotalText').innerText = `₦${totalAmount.toLocaleString()}`;
+        }
+
+        function backToMenu() {
+            document.getElementById('checkoutScreen').style.display = 'none';
+            document.getElementById('menuScreen').style.display = 'block';
+        }
+
+        function completeOrder(event) {
+            event.preventDefault();
+            document.getElementById('checkoutScreen').style.display = 'none';
+            document.getElementById('successScreen').style.display = 'block';
+        }
+
+        function resetApp() {
+            cart = [];
+            totalAmount = 0;
+            document.getElementById('cartBadge').innerText = `🛒 0`;
+            document.getElementById('basketBar').style.display = 'none';
+            document.getElementById('successScreen').style.display = 'none';
+            document.getElementById('menuScreen').style.display = 'block';
+        }
+    </script>
+
+</body>
+</html>
