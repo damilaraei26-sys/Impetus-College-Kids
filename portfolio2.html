@@ -1,0 +1,190 @@
+See<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Junior Developer Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #0f172a;
+            color: #f8fafc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .portfolio-container {
+            width: 100%;
+            max-width: 800px;
+            background: #1e293b;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+        }
+
+        /* Left Profile Sidebar */
+        .sidebar {
+            background: #111827;
+            padding: 40px 30px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border-right: 1px solid #334155;
+        }
+
+        .avatar-circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+        .avatar-circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 40px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+        }
+
+        .sidebar h2 {
+            font-size: 22px;
+            margin-bottom: 5px;
+        }
+
+        .sidebar p {
+            color: #3b82f6;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .tag-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .skill-tag {
+            background: #273549;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+        /* Right Content Area */
+        .main-content {
+            padding: 40px;
+        }
+
+        .main-content h3 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: #cbd5e1;
+            border-bottom: 2px solid #334155;
+            padding-bottom: 8px;
+        }
+
+        .projects-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .project-card {
+            background: #111827;
+            border: 1px solid #334155;
+            padding: 20px;
+            border-radius: 12px;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
+        }
+
+        /* Hover animation effects linking to the gallery file */
+        .project-card:hover {
+            transform: translateX(8px);
+            border-color: #8b5cf6;
+            background: #1e1b4b;
+            box-shadow: 0 5px 15px rgba(139, 92, 246, 0.2);
+        }
+
+        .project-card h4 {
+            color: #3b82f6;
+            margin-bottom: 8px;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .project-card p {
+            color: #94a3b8;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .click-hint {
+            display: inline-block;
+            margin-top: 12px;
+            font-size: 12px;
+            color: #8b5cf6;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="portfolio-container">
+        <div class="sidebar">
+            <div class="avatar-circle">
+                <img src="SAM - Copy.jpeg" alt="Profile Picture">
+            </div>
+            <h2>Adenekan Samuel</h2>
+
+            <p style="text-align: center;">Frontend Developer</p>
+            <div class="tag-container">
+                <span class="skill-tag">HTML5</span>
+                <span class="skill-tag">CSS3</span>
+                <span class="skill-tag">Flexbox</span>
+                <span class="skill-tag">UI Design</span>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <h3>Featured Portfolios</h3>
+            <div class="projects-grid">
+                
+                <a href="linktoportfolio.html"class="project-card">
+                    <h4>🚀 View My Creations Gallery</h4>
+                    <p>Click here to explore full responsive web interface templates, landing page structures, and customized retail application frontends designed from scratch.</p>
+                    <span class="click-hint">Explore Interactive Gallery ↗</span>
+                </a>
+
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
