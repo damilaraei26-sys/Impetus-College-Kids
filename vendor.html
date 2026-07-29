@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Naija Drinks Express</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #f4f6f8;
+      color: #333;
+      padding-bottom: 3rem;
+    }
+
+    header {
+      background-color: #008751; /* Nigerian Green */
+      color: white;
+      padding: 1.5rem 2rem;
+      text-align: center;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    header h1 {
+      font-size: 2rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+      display: grid;
+      grid-template-columns: 2fr 1.2fr;
+      gap: 2rem;
+    }
+
+    @media (max-width: 850px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Titles */
+    h2 {
+      margin-bottom: 1rem;
+      color: #222;
+      border-bottom: 2px solid #008751;
+      padding-bottom: 0.5rem;
+    }
+
+    /* Menu Grid */
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .card {
+      background: white;
+      border-radius: 8px;
+      padding: 1.2rem;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+    }
+
+    .card img {
+      width: 100%;
+      height: 130px;
+      object-fit: contain;
+      margin-bottom: 0.8rem;
+    }
+
+    .card h3 {
+      font-size: 1.1rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .card .size {
+      font-size: 0.85rem;
+      color: #666;
+      margin-bottom: 0.6rem;
+    }
+
+    .card .price {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #008751;
+      margin-bottom: 1rem;
+    }
+
+    .card button, .btn-primary {
+      background-color: #008751;
+      color: white;
+      border: none;
+      padding: 0.6rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      width: 100%;
+      transition: background-color 0.2s;
+    }
+
+    .card button:hover, .btn-primary:hover {
+      background-color: #005f38;
+    }
+
+    /* Cart & Order Section */
+    .sidebar-panel {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      height: fit-content;
+    }
+
+    .cart-items {
+      list-style: none;
+      margin-bottom: 1rem;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .cart-item-name {
+      font-weight: bold;
+      font-size: 0.95rem;
+      display: block;
+    }
+
+    .cart-item-qty {
+      font-size: 0.8rem;
+      color: #666;
+    }
+
+    .cart-controls button {
+      background: #e74c3c;
+      color: white;
+      border: none;
+      padding: 0.2rem 0.5rem;
+      border-radius: 3px;
+      cursor: pointer;
+      font-size: 0.8rem;
+    }
+
+    .total-container {
+      display: flex;
+      justify-content: space-between;
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin: 1rem 0;
+    }
+
+    /* Checkout Form Styling */
+    .checkout-form {
+      margin-top: 1.5rem;
+      border-top: 2px dashed #ddd;
+      padding-top: 1rem;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: bold;
+      margin-bottom: 0.3rem;
+    }
+
+    .form-group input, .form-group textarea, .form-group select {
+      width: 100%;
+      padding: 0.6rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 0.9rem;
+    }
+
+    .eta-badge {
+      background-color: #e8f5e9;
+      color: #2e7d32;
+      border: 1px solid #a5d6a7;
+      padding: 0.8rem;
+      border-radius: 6px;
+      text-align: center;
+      font-weight: bold;
+      margin-bottom: 1.2rem;
+    }
+
+    .empty-msg {
+      color: #888;
+      text-align: center;
+      padding: 1rem 0;
+    }
+
+    /* Order Confirmation Card */
+    .confirmation-box {
+      background: #ffffff;
+      border: 2px solid #008751;
+      border-radius: 8px;
+      padding: 1.5rem;
+      text-align: center;
+    }
+
+    .confirmation-box h3 {
+      color: #008751;
+      margin-bottom: 0.5rem;
+    }
+
+    .order-number {
+      font-size: 1.4rem;
+      font-weight: bold;
+      background: #f4f6f8;
+      display: inline-block;
+      padding: 0.4rem 1rem;
+      border-radius: 4px;
+      margin: 0.5rem 0;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Naija Drinks Express</h1>
+    <p>Chilled Plastic Drinks & Bottled Water Delivered Fast.</p>
+  </header>
+
+  <div class="container">
+    <!-- Drink Menu -->
+    <section class="menu-section">
+      <h2>Our Menu</h2>
+      <div class="menu-grid" id="menu-grid"></div>
+    </section>
+
+    <!-- Sidebar: Cart & Delivery Details -->
+    <aside class="sidebar-panel">
+      <!-- Active Cart & Delivery View -->
+      <div id="cart-view">
+        <h2>Your Cart</h2>
+        <div id="cart-items" class="cart-items">
+          <p class="empty-msg">Your cart is currently empty.</p>
+        </div>
+        <div class="total-container">
+          <span>Total:</span>
+          <span id="cart-total">₦0</span>
+        </div>
+
+        <!-- Checkout Form (Shows when cart has items) -->
+        <div id="checkout-form-container" class="checkout-form hidden">
+          <h2>Delivery & Payment</h2>
+          
+          <div class="eta-badge">
+            🚀 Ready for delivery in <strong>5 Minutes!</strong>
+          </div>
+
+          <form id="order-form" onsubmit="handlePlaceOrder(event)">
+            <div class="form-group">
+              <label for="fullname">Full Name *</label>
+              <input type="text" id="fullname" required placeholder="e.g. Chukwuma Adebayo">
+            </div>
+
+            <div class="form-group">
+              <label for="phone">Phone Number *</label>
+              <input type="tel" id="phone" required placeholder="e.g. 08012345678">
+            </div>
+
+            <div class="form-group">
+              <label for="address">Delivery Address *</label>
+              <textarea id="address" rows="2" required placeholder="House number, street, area"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="payment">Payment Option *</label>
+              <select id="payment" required>
+                <option value="Cash on Delivery">Cash on Delivery</option>
+                <option value="Card Payment on Delivery">Card Payment on Delivery (POS)</option>
+              </select>
+            </div>
+
+            <button type="submit" class="btn-primary">Confirm & Place Order</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Confirmation View (Shown after placing order) -->
+      <div id="confirmation-view" class="confirmation-box hidden">
+        <h3>Order Confirmed! 🎉</h3>
+        <p>Your order number is:</p>
+        <div class="order-number" id="display-order-id">#000000</div>
+        
+        <div class="eta-badge" style="margin-top: 1rem;">
+          ⏱ Ready in <strong>5 Minutes!</strong>
+        </div>
+
+        <p style="font-size: 0.9rem; color: #555; margin: 1rem 0;" id="order-summary-details"></p>
+        
+        <button class="btn-primary" onclick="resetApp()">Order Again</button>
+      </div>
+    </aside>
+  </div>
+
+  <script>
+    // Strict Menu Constraint: Bottled Water and specified Plastic Drinks only
+    const menu = [
+      { id: 1, name: "Bottled Premium Water", size: "75cl Plastic Bottle", price: 400, image: "bw.png" },
+      { id: 2, name: "Coca-Cola", size: "50cl Plastic Bottle", price: 450, image: "bc.jpeg" },
+      { id: 3, name: "Fanta Orange", size: "50cl Plastic Bottle", price: 450, image: "bf.webp" },
+      { id: 4, name: "Sprite", size: "50cl Plastic Bottle", price: 450, image: "bs1.avif" },
+      { id: 5, name: "Pepsi", size: "50cl Plastic Bottle", price: 450, image: "bp.jpg" }
+    ];
+
+    let cart = [];
+
+    // Helper to format currency in Nigerian Naira
+    function formatNaira(amount) {
+      return '₦' + amount.toLocaleString('en-NG');
+    }
+
+    // Render Menu Items
+    function renderMenu() {
+      const menuGrid = document.getElementById('menu-grid');
+      menuGrid.innerHTML = menu.map(item => `
+        <div class="card">
+          <img src="${item.image}" alt="${item.name}">
+          <div>
+            <h3>${item.name}</h3>
+            <p class="size">${item.size}</p>
+            <p class="price">${formatNaira(item.price)}</p>
+          </div>
+          <button onclick="addToCart(${item.id})">Add to Cart</button>
+        </div>
+      `).join('');
+    }
+
+    // Add item to cart
+    function addToCart(productId) {
+      const existingItem = cart.find(item => item.id === productId);
+      if (existingItem) {
+        existingItem.quantity += 1;
+      } else {
+        const product = menu.find(p => p.id === productId);
+        cart.push({ ...product, quantity: 1 });
+      }
+      updateCartUI();
+    }
+
+    // Remove item from cart
+    function removeFromCart(productId) {
+      cart = cart.filter(item => item.id !== productId);
+      updateCartUI();
+    }
+
+    // Update Cart HTML and visibility
+    function updateCartUI() {
+      const cartItemsContainer = document.getElementById('cart-items');
+      const cartTotalContainer = document.getElementById('cart-total');
+      const checkoutFormContainer = document.getElementById('checkout-form-container');
+
+      if (cart.length === 0) {
+        cartItemsContainer.innerHTML = '<p class="empty-msg">Your cart is currently empty.</p>';
+        cartTotalContainer.innerText = '₦0';
+        checkoutFormContainer.classList.add('hidden');
+        return;
+      }
+
+      let total = 0;
+      cartItemsContainer.innerHTML = cart.map(item => {
+        const itemTotal = item.price * item.quantity;
+        total += itemTotal;
+        return `
+          <div class="cart-item">
+            <div>
+              <span class="cart-item-name">${item.name}</span>
+              <span class="cart-item-qty">${item.quantity} x ${formatNaira(item.price)}</span>
+            </div>
+            <div class="cart-controls">
+              <button onclick="removeFromCart(${item.id})">Remove</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      cartTotalContainer.innerText = formatNaira(total);
+      checkoutFormContainer.classList.remove('hidden');
+    }
+
+    // Handle Order Submission
+    function handlePlaceOrder(event) {
+      event.preventDefault();
+
+      const name = document.getElementById('fullname').value;
+      const phone = document.getElementById('phone').value;
+      const address = document.getElementById('address').value;
+      const payment = document.getElementById('payment').value;
+      const totalText = document.getElementById('cart-total').innerText;
+
+      // Generate random order ID (e.g. #NG-84920)
+      const orderId = '#NDE-' + Math.floor(100000 + Math.random() * 900000);
+
+      // Show confirmation screen
+      document.getElementById('cart-view').classList.add('hidden');
+      document.getElementById('confirmation-view').classList.remove('hidden');
+      
+      document.getElementById('display-order-id').innerText = orderId;
+      document.getElementById('order-summary-details').innerHTML = `
+        Thank you, <strong>${name}</strong>!<br>
+        Your order totaling <strong>${totalText}</strong> will be delivered to <em>${address}</em>.<br>
+        <strong>Payment Mode:</strong> ${payment}<br>
+        We will call you at <strong>${phone}</strong> upon arrival.
+      `;
+    }
+
+    // Reset app for next order
+    function resetApp() {
+      cart = [];
+      document.getElementById('order-form').reset();
+      document.getElementById('cart-view').classList.remove('hidden');
+      document.getElementById('confirmation-view').classList.add('hidden');
+      updateCartUI();
+    }
+
+    // Initialize application
+    renderMenu();
+  </script>
+</body>
+</html>
+
+```
